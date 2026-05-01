@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "kargiDataSub",
-    "slug": "kargiDataSub",
-    "version": "1.0.0",
+    "name": "k-data sub",
+    "slug": "k-data sub",
+    "version": "4.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Logo.png",
-    "scheme": "kargidatasub",
+    "scheme": "k-datasub",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
