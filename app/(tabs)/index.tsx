@@ -1,98 +1,66 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
+import { useSelector } from 'react-redux';
+import { LinearGradient } from 'expo-linear-gradient';
+import { RootState } from '../../store/store';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+// Imports
+import Header from '../../components/home/Header';
+import WalletCard from '../../components/WalletCard'; 
+import QuickActions from '../../components/home/QuickActions';
+import PopularPlans from '../../components/home/PopularPlans';
+import QuickBundles from '../../components/home/QuickBundles';
+import EducationBills from '../../components/home/EducationBills'; // <-- NEW
+import ElectricityBills from '../../components/home/ElectricityBills'; // <-- NEW
+import RecentTransactions from '../../components/home/RecentTransactions';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const isDark = useSelector((state: RootState) => state.theme.mode) === 'dark';
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  return (
+    <LinearGradient
+      colors={['#FF7A00', '#4A9C9C']} 
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.gradientBorderWrapper}
+    >
+      <LinearGradient
+        colors={isDark ? ['#0F172A', '#1E293B'] : ['#ffffff', '#87CEEB']} // Added dark mode gradient background!
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={styles.innerBackground}
+      >
+          <ScrollView showsVerticalScrollIndicator={false}>
+            
+            <Header />
+            <WalletCard />
+            <QuickActions />
+            <PopularPlans />
+            <QuickBundles />
+            
+            {/* --- NEW SECTIONS INSERTED HERE --- */}
+            <ElectricityBills />
+            <EducationBills />
+            {/* ---------------------------------- */}
+            
+            <RecentTransactions />
+
+            <View style={{height: 100}} />
+            
+          </ScrollView>
+      </LinearGradient>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  gradientBorderWrapper: {
+    flex: 1,
+    
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+  innerBackground: {
+    flex: 1,
+    
+    overflow: 'hidden',
+  }
 });
