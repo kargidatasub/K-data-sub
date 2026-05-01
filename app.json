@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "k-data sub",
-    "slug": "k-data sub",
+    "slug": "k-data-sub",
     "version": "4.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Logo.png",
@@ -43,6 +43,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "685f9c15-19bc-4d40-b063-dfe8153eb791"
+      }
     }
   }
 }
