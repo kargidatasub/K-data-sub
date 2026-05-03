@@ -1,26 +1,30 @@
 import React, { useEffect, useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet, Dimensions, Animated, Text } from 'react-native';
-import { Tabs } from 'expo-router';
+// 1. Import the new Layout Context and MaterialTopTabs
+import { withLayoutContext } from 'expo-router';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
 import { Ionicons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
-// 1. Create the Custom Tab Bar Component
+// 2. Initialize the Swipeable Navigator
+const TopTab = createMaterialTopTabNavigator();
+const SwipeTabs = withLayoutContext(TopTab.Navigator);
+
+// 3. Your Custom Tab Bar (No changes needed here!)
 function CustomTabBar({ state, descriptors, navigation }: any) {
   const insets = useSafeAreaInsets();
   const isDark = useSelector((state: RootState) => state.theme.mode) === 'dark';
   
-  // Calculate widths for the sliding animation - NOW FULL WIDTH
   const { width } = Dimensions.get('window');
-  const TAB_BAR_WIDTH = width; // Removed the horizontal padding deduction
+  const TAB_BAR_WIDTH = width; 
   const TAB_WIDTH = TAB_BAR_WIDTH / state.routes.length;
 
-  // Animation value
   const slideAnim = useRef(new Animated.Value(0)).current;
 
-  // 2. Animate the indicator whenever the active tab (state.index) changes
   useEffect(() => {
     Animated.spring(slideAnim, {
       toValue: state.index * TAB_WIDTH,
@@ -31,28 +35,22 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
   }, [state.index]);
 
   return (
-    // Removed paddingHorizontal from the wrapper so it touches the edges
     <View style={[styles.tabBarWrapper, { paddingBottom: insets.bottom > 0 ? insets.bottom : 0 }]}>
-      {/* 3. The Glass Background */}
       <BlurView 
         intensity={isDark ? 40 : 80} 
         tint={isDark ? "dark" : "light"} 
         experimentalBlurMethod="dimezisBlurView" 
         style={[styles.blurContainer, isDark && styles.blurContainerDark]}
       >
-        
-        {/* 4. The Sliding Indicator */}
         <Animated.View 
             style={[
                 styles.slidingIndicator, 
                 { width: TAB_WIDTH, transform: [{ translateX: slideAnim }] }
             ]} 
         >
-            {/* The inner pill that creates the background color for the active icon */}
             <View style={styles.indicatorPill} />
         </Animated.View>
 
-        {/* 5. Map through the routes to create the clickable tabs */}
         {state.routes.map((route: any, index: number) => {
           const { options } = descriptors[route.key];
           const isFocused = state.index === index;
@@ -93,95 +91,58 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
   );
 }
 
-// 6. Pass our CustomTabBar into Expo Router's <Tabs>
+// 4. Swap <Tabs> for <SwipeTabs>
 export default function TabLayout() {
   return (
-    <Tabs 
+    <SwipeTabs 
+        // Force the "Top" tabs to the bottom of the screen
+        tabBarPosition="bottom" 
         tabBar={(props) => <CustomTabBar {...props} />} 
-        screenOptions={{ headerShown: false }}
+        screenOptions={{ 
+            // Swipe is enabled by default, but you can toggle this to false 
+            // if you only want the click animation without screen swiping!
+            swipeEnabled: true, 
+        }}
     >
-      <Tabs.Screen 
+      <SwipeTabs.Screen 
         name="index" 
         options={{ 
           title: 'Home', 
-          tabBarIcon: ({ color }) => <Ionicons name="home" size={24} color={color} /> 
+          tabBarIcon: ({ color }: any) => <Ionicons name="home" size={24} color={color} /> 
         }} 
       />
-      <Tabs.Screen 
+      <SwipeTabs.Screen 
         name="history" 
         options={{ 
           title: 'History', 
-          tabBarIcon: ({ color }) => <Ionicons name="time-outline" size={24} color={color} /> 
+          tabBarIcon: ({ color }: any) => <Ionicons name="time-outline" size={24} color={color} /> 
         }} 
       />
-      <Tabs.Screen 
+      <SwipeTabs.Screen 
         name="bills" 
         options={{ 
           title: 'Bills', 
-          tabBarIcon: ({ color }) => <Ionicons name="document-text-outline" size={24} color={color} /> 
+          tabBarIcon: ({ color }: any) => <Ionicons name="document-text-outline" size={24} color={color} /> 
         }} 
       />
-      <Tabs.Screen 
+      <SwipeTabs.Screen 
         name="profile" 
         options={{ 
           title: 'Profile', 
-          tabBarIcon: ({ color }) => <Ionicons name="person-outline" size={24} color={color} /> 
+          tabBarIcon: ({ color }: any) => <Ionicons name="person-outline" size={24} color={color} /> 
         }} 
       />
-    </Tabs>
+    </SwipeTabs>
   );
 }
 
 // --- Styles ---
 const styles = StyleSheet.create({
-  tabBarWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    // paddingHorizontal: 20, <--- REMOVED
-    elevation: 10,
-    zIndex: 10,
-  },
-  blurContainer: {
-    flexDirection: 'row',
-    height: 70,
-    
-    alignItems: 'center',
-    overflow: 'hidden', 
-    borderWidth: 0,
-    
-    
-    // Optional: Add a very subtle top border so it separates from the app content
-    borderTopWidth: 0,
-    
-  },
-  blurContainerDark: {
-    // borderColor: 'rgba(255, 255, 255, 0.1)', <--- REMOVED
-    borderTopColor: 'rgba(255, 255, 255, 0.05)', // Subtle top border for dark mode
-    backgroundColor: 'rgba(17, 24, 39, 0.6)', 
-  },
-  slidingIndicator: {
-    position: 'absolute',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  indicatorPill: {
-    width: '65%', 
-    height: 45,
-    backgroundColor: 'rgba(11, 47, 102, 0.1)', 
-    borderRadius: 22.5,
-  },
-  tabItem: {
-    flex: 1,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 2, 
-  },
-  tabLabel: {
-    fontSize: 10,
-    marginTop: 4,
-  }
+  tabBarWrapper: { position: 'absolute', bottom: 0, left: 0, right: 0, elevation: 10, zIndex: 10 },
+  blurContainer: { flexDirection: 'row', height: 70, alignItems: 'center', overflow: 'hidden', borderWidth: 0, borderTopWidth: 0 },
+  blurContainerDark: { borderTopColor: 'rgba(255, 255, 255, 0.05)', backgroundColor: 'rgba(17, 24, 39, 0.6)' },
+  slidingIndicator: { position: 'absolute', height: '100%', justifyContent: 'center', alignItems: 'center' },
+  indicatorPill: { width: '65%', height: 45, backgroundColor: 'rgba(11, 47, 102, 0.1)', borderRadius: 22.5 },
+  tabItem: { flex: 1, height: '100%', justifyContent: 'center', alignItems: 'center', zIndex: 2 },
+  tabLabel: { fontSize: 10, marginTop: 4 }
 });

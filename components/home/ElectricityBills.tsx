@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router'; // <-- Added for navigation
 import { RootState } from '../../store/store';
 
 // Mock list of DisCos (Distribution Companies) in Nigeria
@@ -19,12 +20,19 @@ export default function ElectricityBills() {
     <View>
         <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, isDark && styles.textDark]}>Pay Electricity</Text>
-            <TouchableOpacity><Text style={styles.seeAllText}>All DisCos</Text></TouchableOpacity>
+            {/* Added routing to the All DisCos button */}
+            <TouchableOpacity onPress={() => router.push('/VTU/electricity')}>
+                <Text style={styles.seeAllText}>All DisCos</Text>
+            </TouchableOpacity>
         </View>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.cardsScrollContent}>
             {ELECTRICITY_DATA.map((provider) => (
-                <TouchableOpacity key={provider.id} style={[styles.providerCard, isDark && styles.providerCardDark]}>
+                <TouchableOpacity 
+                    key={provider.id} 
+                    onPress={() => router.push('/VTU/electricity')}
+                    style={[styles.providerCard, isDark && styles.providerCardDark]}
+                >
                     <View style={[styles.iconBg, { backgroundColor: provider.color + '1A' }]}> 
                         {/* The + '1A' adds 10% opacity to the hex color for a beautiful soft background */}
                         <Ionicons name="bulb" size={28} color={provider.color} />

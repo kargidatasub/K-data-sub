@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router'; // <-- Added for navigation
 import { RootState } from '../../store/store';
 
 // 1. Mock Data for 7 Transactions
@@ -49,7 +50,12 @@ export default function RecentTransactions() {
 
         {/* 4. Map through the transactions array */}
         {TRANSACTIONS.map((tx) => (
-            <TouchableOpacity key={tx.id} style={[styles.transactionItem, isDark && styles.transactionItemDark]}>
+            <TouchableOpacity 
+                key={tx.id} 
+                // Navigate to a dynamic route using the transaction ID!
+                onPress={() => router.push(`/transaction/${tx.id}`)} 
+                style={[styles.transactionItem, isDark && styles.transactionItemDark]}
+            >
                 <View style={styles.transLeft}>
                     {/* Render the dynamic logo background */}
                     <View style={[styles.iconContainer, isDark && styles.iconContainerDark]}>
@@ -69,8 +75,11 @@ export default function RecentTransactions() {
             </TouchableOpacity>
         ))}
 
-        {/* 5. The "See More" Button at the bottom */}
-        <TouchableOpacity style={styles.seeMoreBtn}>
+        {/* 5. The "See More" Button routed to the History tab */}
+        <TouchableOpacity 
+            style={styles.seeMoreBtn}
+            onPress={() => router.push('/history')}
+        >
             <Text style={styles.seeMoreText}>See all transactions</Text>
             <Ionicons name="chevron-forward" size={16} color="#4A9C9C" />
         </TouchableOpacity>
@@ -103,7 +112,6 @@ const styles = StyleSheet.create({
       padding: 16, 
       borderRadius: 16, 
       marginBottom: 12,
-      // Added a subtle shadow to make it pop
       shadowColor: '#000', 
       shadowOffset: { width: 0, height: 2 }, 
       shadowOpacity: 0.04, 

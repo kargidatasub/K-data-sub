@@ -25,7 +25,7 @@ export default function HomeScreen() {
       style={styles.gradientBorderWrapper}
     >
       <LinearGradient
-        colors={isDark ? ['#0F172A', '#1E293B'] : ['#ffffff', '#87CEEB']} // Added dark mode gradient background!
+        colors={isDark ? ['#0F172A', '#1E293B'] : ['#ffffff', '#ffffff']} // Added dark mode gradient background!
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={styles.innerBackground}
