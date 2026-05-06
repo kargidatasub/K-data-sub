@@ -125,7 +125,7 @@ function AppContent() {
       <StatusBar barStyle="light-content" backgroundColor={isDark ? '#0F172A' : '#0B2F66'} />
       
       <Stack screenOptions={{ headerShown: false }}>
-        {/* --- REGISTERED AUTH FOLDER --- */}
+        {/* --- REGISTER ED AUTH FOLDER --- */}
         <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'slide_from_bottom' }} />
         
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
