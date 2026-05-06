@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import walletReducer from './walletSlice';
-import themeReducer from './themeSlice'; // <-- Import theme slice
+import themeReducer from './themeSlice'; 
+import authReducer from './authSlice'; // <-- Import auth slice
 
 export const store = configureStore({
   reducer: {
     wallet: walletReducer,
-    theme: themeReducer, // <-- Add to the store
+    theme: themeReducer, 
+    auth: authReducer, // <-- Add auth to the store
   },
 });
 

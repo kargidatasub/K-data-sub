@@ -3,26 +3,22 @@ import { Stack } from 'expo-router';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store'; 
 
-export default function VTULayout() {
+export default function SettingsLayout() {
   const isDark = useSelector((state: RootState) => state.theme.mode) === 'dark';
 
   return (
     <Stack
       screenOptions={{
         headerShown: false, 
-        
-        // Since we are no longer on the tab screen, standard horizontal slide works perfectly here!
+        // Smooth horizontal slide for navigating inside settings
         animation: 'slide_from_right', 
-        
         contentStyle: {
           backgroundColor: isDark ? '#111827' : '#F4F7FB',
         },
       }}
     >
-      <Stack.Screen name="buy-data" />
-      <Stack.Screen name="airtime" />
-      <Stack.Screen name="cable" />
-      <Stack.Screen name="electricity" />
+      <Stack.Screen name="help" />
+      <Stack.Screen name="security" />
     </Stack>
   );
 }

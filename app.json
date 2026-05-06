@@ -4,7 +4,7 @@
     "slug": "k-data-sub",
     "version": "2.0.0KS",
     "orientation": "portrait",
-    "icon": "./assets/images/Logo.png",
+    "icon": "./assets/images/Android.png",
     "scheme": "k-datasub",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -15,23 +15,23 @@
       "package": "com.kdatasub.app",
       "adaptiveIcon": {
         "backgroundColor": "#000050",
-        "foregroundImage": "./assets/images/Logo.png",
-        "backgroundImage": "./assets/images/Logo.png",
-        "monochromeImage": "./assets/images/Logo.png"
+        "foregroundImage": "./assets/images/Android.png",
+        "backgroundImage": "./assets/images/Android.png",
+        "monochromeImage": "./assets/images/Android.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/Logo.png"
+      "favicon": "./assets/images/Android.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/Logo.png",
+          "image": "./assets/images/Android.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#000050",
